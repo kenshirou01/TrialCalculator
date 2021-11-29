@@ -6,47 +6,44 @@ let subtract = document.getElementById("subtract");
 let times = document.getElementById("times");
 let decimal = document.getElementById("decimal");
 let division = document.getElementById("division");
-let key = "0";
-
-inactive();
+let flg = 0;
 
 function get_value(btn) {
     let sum = btn.value
-        if(sum == "=") {
-           display.value = eval(display.value);
+        // = 入力処理
+        if (sum == "=") {
+            if (display.value == "0") {
+                display.value = "0";
+            }else {
+                display.value = eval(display.value);
+                flg = 1;
+            }
+        // AC 入力処理
           } else if (sum == "") {
-              display.value = "";
+              display.value = "0";
+              flg = 0;
               inactive();
+        // 数字　入力処理
           } else if (!isNaN(sum)){
-              display.value += sum;
-              active();
-          }else{
-              display.value += sum;
-              inactive();
-            //   if (sum == "*") {
-            //       key = sum;
-            //       display.value += sum;
-            //       console.log(key);
-            //   }else if (sum == "/"){
-            //       key = sum;
-            //       display.value += sum;
-            //       console.log(key);
-            //   }else if (sum == "+"){
-            //       key = sum;
-            //       display.value += sum;
-            //       console.log(key);
-            //   }else if (sum == "-"){
-            //       key = sum;
-            //       display.value += sum;
-            //       console.log(key);
-            //   }else if (sum == "."){
-            //       key = sum;
-            //       display.value += sum;
-            //       console.log(key);
-            //   }else {
-            //       display.value += sum;
-            //       console.log("エラー");
-            //   }
+              if (flg == 1) {
+                  display.value = sum;
+                  flg = 0;
+              } else {
+                  if (sum == "00" && (display.value == "" || display.value == "0")) {
+                      display.value = "0";
+                      active();
+                  }else if (display.value == "0" || display.value == "00"){
+                      display.value = sum;
+                  }else {
+                      display.value += sum;
+                      active();
+                  }
+              }
+        // 記号　入力処理
+          } else{
+                  display.value += sum;
+                  flg = 0;
+                  inactive();
           }
 }
 
